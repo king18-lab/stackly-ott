@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Stackly OTT • Navbar (no dropdown)</title>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: #0a0a0a;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ----- STACKLY OTT LOADER (3 SECONDS) ----- */
+    .stackly-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0a0a0a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .stackly-loader.fade-out {
+      opacity: 0;
+      transform: scale(1.1);
+      pointer-events: none;
+    }
+
+    .loader-content {
+      text-align: center;
+      max-width: 90%;
+    }
+
+    /* Red ring (Stackly OTT theme) */
+    .loader-ring {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #d32f2f, #b71c1c, #d32f2f, #ff6b6b, #d32f2f);
+      margin: 0 auto 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: rotateRing 2s linear infinite;
+      position: relative;
+      box-shadow: 0 0 30px #d32f2f;
+    }
+
+    .loader-ring::before {
+      content: '';
+      position: absolute;
+      width: 110px;
+      height: 110px;
+      background: #0a0a0a;
+      border-radius: 50%;
+    }
+
+    .loader-ring-inner {
+      width: 90px;
+      height: 90px;
+      background: #0a0a0a;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+      border: 2px solid #d32f2f;
+    }
+
+    .loader-ring-inner i {
+      font-size: 3.5rem;
+      color: #d32f2f;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes rotateRing {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    /* OTT platform icons */
+    .loader-icons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .loader-icons i {
+      font-size: 2.2rem;
+      color: #d32f2f;
+      animation: iconPop 1.5s infinite;
+      filter: drop-shadow(0 0 10px #d32f2f);
+    }
+
+    .loader-icons i:nth-child(1) { animation-delay: 0s; }
+    .loader-icons i:nth-child(2) { animation-delay: 0.2s; }
+    .loader-icons i:nth-child(3) { animation-delay: 0.4s; }
+    .loader-icons i:nth-child(4) { animation-delay: 0.6s; }
+    .loader-icons i:nth-child(5) { animation-delay: 0.8s; }
+
+    @keyframes iconPop {
+      0%, 100% { 
+        transform: scale(1);
+        opacity: 0.7;
+      }
+      50% { 
+        transform: scale(1.2);
+        opacity: 1;
+      }
+    }
+
+    /* Progress bars */
+    .loader-stories {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin: 30px 0 20px;
+    }
+
+    .story-progress {
+      width: 70px;
+      height: 5px;
+      background: #262626;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .story-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #d32f2f, #ff6b6b);
+      border-radius: 10px;
+    }
+
+    .story-progress:nth-child(1) .story-progress-bar {
+      animation: storyProgress1 3s linear forwards;
+    }
+    .story-progress:nth-child(2) .story-progress-bar {
+      animation: storyProgress2 3s linear forwards;
+    }
+    .story-progress:nth-child(3) .story-progress-bar {
+      animation: storyProgress3 3s linear forwards;
+    }
+
+    @keyframes storyProgress1 {
+      0% { width: 0%; }
+      30% { width: 100%; }
+      100% { width: 100%; }
+    }
+    @keyframes storyProgress2 {
+      0% { width: 0%; }
+      30% { width: 0%; }
+      60% { width: 100%; }
+      100% { width: 100%; }
+    }
+    @keyframes storyProgress3 {
+      0% { width: 0%; }
+      60% { width: 0%; }
+      90% { width: 100%; }
+      100% { width: 100%; }
+    }
+
+    /* Loading text */
+    .loader-text {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-top: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .loader-text span {
+      background: linear-gradient(135deg, #d32f2f, #ff6b6b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+    }
+
+    .loader-emoji {
+      animation: bounce 1s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    /* Floating hearts */
+    .loader-hearts {
+      position: relative;
+      height: 40px;
+      margin-top: 20px;
+    }
+
+    .loader-hearts i {
+      position: absolute;
+      color: #d32f2f;
+      font-size: 1.3rem;
+      opacity: 0;
+      animation: floatHeart 2s infinite;
+      filter: drop-shadow(0 0 5px #d32f2f);
+    }
+
+    .loader-hearts i:nth-child(1) { left: 35%; animation-delay: 0s; }
+    .loader-hearts i:nth-child(2) { left: 40%; animation-delay: 0.3s; }
+    .loader-hearts i:nth-child(3) { left: 45%; animation-delay: 0.6s; }
+    .loader-hearts i:nth-child(4) { left: 50%; animation-delay: 0.9s; }
+    .loader-hearts i:nth-child(5) { left: 55%; animation-delay: 1.2s; }
+    .loader-hearts i:nth-child(6) { left: 60%; animation-delay: 1.5s; }
+
+    @keyframes floatHeart {
+      0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.5);
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(-20px) scale(1.2);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-40px) scale(0.5);
+      }
+    }
+
+    /* Live user count */
+    .loader-users {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 25px;
+      color: #aaa;
+      font-size: 1rem;
+    }
+
+    .loader-users i {
+      color: #d32f2f;
+    }
+
+    .loader-users .count {
+      color: #d32f2f;
+      font-weight: 700;
+      animation: countUp 3s forwards;
+    }
+
+    /* ----- NAVBAR (Stackly OTT style, no dropdown) ----- */
+    .navbar {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background: #000;
+      border-bottom: 3px solid #d32f2f;
+      padding: 0.5rem 1rem;
+      z-index: 1000;
+      opacity: 0;
+      animation: fadeInNav 0.5s ease 2.8s forwards;
+      box-shadow: 0 4px 20px rgba(211, 47, 47, 0.2);
+    }
+
+    @keyframes fadeInNav {
+      to { opacity: 1; }
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* logo image */
+    .logo a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .logo-img {
+      height: auto;
+      width: 130px;
+      display: block;
+      filter: drop-shadow(0 0 8px #d32f2f);
+    }
+
+    /* desktop navigation - no dropdown */
+    .nav-links {
+      display: flex;
+      gap: 0.5rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links li a {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      color: #f5f5f5;
+      font-weight: 600;
+      border-radius: 40px;
+      transition: 0.2s;
+      font-size: 1rem;
+    }
+
+    .nav-links li a i {
+      font-size: 1.2rem;
+      color: #d32f2f;
+    }
+
+    .nav-links li a:hover {
+      background: #1a1a1a;
+      color: #d32f2f;
+    }
+
+    /* right actions */
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .search-btn, .download-btn {
+      background: transparent;
+      font-size: 1.3rem;
+      color: #f5f5f5;
+      padding: 0.5rem;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+
+    .search-btn:hover, .download-btn:hover {
+      background: #1a1a1a;
+      color: #d32f2f;
+    }
+
+    .profile-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #1a1a1a;
+      padding: 0.4rem 1rem 0.4rem 0.6rem;
+      border-radius: 40px;
+      text-decoration: none;
+      color: white;
+      border: 2px solid #d32f2f;
+    }
+    .profile-link img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid #d32f2f;
+    }
+
+    /* hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 10px;
+    }
+    .hamburger span {
+      width: 26px;
+      height: 2px;
+      background: #d32f2f;
+      border-radius: 4px;
+    }
+
+    /* mobile menu */
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100vh;
+      background: #000;
+      z-index: 2000;
+      transition: left 0.3s ease;
+      padding: 2rem 1.5rem;
+      overflow-y: auto;
+      border-right: 3px solid #d32f2f;
+    }
+
+    .mobile-menu.active {
+      left: 0;
+    }
+
+    .mobile-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    .mobile-logo-img {
+      width: 100px;
+      height: auto;
+    }
+
+    .close-mobile {
+      font-size: 2rem;
+      cursor: pointer;
+      color: #d32f2f;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mobile-links {
+      list-style: none;
+    }
+
+    .mobile-links li {
+      margin: 0.8rem 0;
+    }
+
+    .mobile-links li a {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-decoration: none;
+      color: white;
+      font-size: 1.3rem;
+      padding: 0.8rem 1rem;
+      border-radius: 40px;
+      font-weight: 500;
+    }
+
+    .mobile-links li i {
+      color: #d32f2f;
+      width: 32px;
+      font-size: 1.5rem;
+    }
+
+    .mobile-links li a:active {
+      background: #1a1a1a;
+    }
+
+    .mobile-profile {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 2px solid #d32f2f;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .mobile-profile img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid #d32f2f;
+    }
+    .mobile-profile a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* overlay */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(4px);
+      z-index: 1500;
+      display: none;
+    }
+    .overlay.active {
+      display: block;
+    }
+
+    /* responsive */
+    @media (max-width: 900px) {
+      .nav-links, .nav-actions .search-btn, .nav-actions .download-btn, .profile-link {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    @media (min-width: 901px) {
+      .mobile-menu, .overlay {
+        display: none;
+      }
+    }
+
+    /* spacer */
+    .spacer {
+      height: 200vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-size: 2rem;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .spacer p {
+      font-size: 1.2rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- STACKLY OTT LOADER (3 SECONDS) -->
+  <div class="stackly-loader" id="stacklyLoader">
+    <div class="loader-content">
+      <!-- Red ring -->
+      <div class="loader-ring">
+        <div class="loader-ring-inner">
+          <i class="fas fa-play"></i>
+        </div>
+      </div>
+      
+      <!-- OTT platform icons -->
+      <div class="loader-icons">
+        <i class="fas fa-film"></i>
+        <i class="fas fa-tv"></i>
+        <i class="fas fa-futbol"></i>
+        <i class="fas fa-child"></i>
+        <i class="fas fa-star"></i>
+      </div>
+      
+      <!-- Progress bars -->
+      <div class="loader-stories">
+        <div class="story-progress">
+          <div class="story-progress-bar"></div>
+        </div>
+        <div class="story-progress">
+          <div class="story-progress-bar"></div>
+        </div>
+        <div class="story-progress">
+          <div class="story-progress-bar"></div>
+        </div>
+      </div>
+      
+      <!-- Loading text -->
+      <div class="loader-text">
+        <span>STACKLY OTT</span>
+        <span class="loader-emoji">🍿</span>
+      </div>
+      
+      <!-- Floating hearts -->
+      <div class="loader-hearts">
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-heart"></i>
+      </div>
+      
+      <!-- Live user count -->
+      <div class="loader-users">
+        <i class="fas fa-users"></i>
+        <span><span class="count" id="userCount">0</span> watching now</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVBAR (no dropdown, download icon, profile as <a>) -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <!-- logo image -->
+      <div class="logo">
+        <a href="404.html">
+          <img class="logo-img" src="stacklylogo (1).webp" alt="Stackly OTT" onerror="this.src='https://via.placeholder.com/130x45/d32f2f/ffffff?text=STACKLY'">
+        </a>
+      </div>
+
+      <!-- desktop navigation - no dropdown -->
+      <ul class="nav-links">
+       <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="movies.html"><i class="fas fa-film"></i> Movies</a></li>
+      <li><a href="sports.html"><i class="fas fa-futbol"></i> Sports</a></li>
+      <li><a href="kids.html"><i class="fas fa-child"></i> Kids</a></li>
+      <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+      <li><a href="contact.html"><i class="fas fa-tag"></i> Contact</a></li>
+       <li><a href="login.html"><i class="fas fa-info-circle"></i> Login</a></li>
+      <li><a href="getstarted.html"><i class="fas fa-tag"></i> Get Started</a></li>
+      
+      </ul>
+
+      <!-- right icons -->
+      <div class="nav-actions">
+        <a href="404.html" class="search-btn"><i class="fas fa-search"></i></a>
+        <!-- Like button replaced with download icon -->
+        <a href="404.html" class="download-btn"><i class="fas fa-download"></i></a>
+        <!-- Profile as <a> tag -->
+        <a href="profile.html" class="profile-link">
+          <img src="hr4.webp" alt="profile">
+          <span>Profile</span>
+        </a>
+      </div>
+
+      <!-- hamburger -->
+      <div class="hamburger" id="hamburgerBtn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- overlay & mobile menu -->
+  <div class="overlay" id="overlay"></div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-header">
+      <img class="mobile-logo-img" src="stacklylogo (1).webp" alt="Stackly OTT" onerror="this.src='https://via.placeholder.com/100x35/d32f2f/ffffff?text=STACKLY'">
+      <span class="close-mobile" id="closeMobile"><i class="fas fa-times"></i></span>
+    </div>
+
+    <ul class="mobile-links">
+      <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="movies.html"><i class="fas fa-film"></i> Movies</a></li>
+      <li><a href="sports.html"><i class="fas fa-futbol"></i> Sports</a></li>
+      <li><a href="kids.html"><i class="fas fa-child"></i> Kids</a></li>
+      <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+      <li><a href="contact.html"><i class="fas fa-tag"></i> Contact</a></li>
+       <li><a href="login.html"><i class="fas fa-info-circle"></i> Login</a></li>
+      <li><a href="getstarted.html"><i class="fas fa-tag"></i> Get Started</a></li>
+      <li><a href="404.html"><i class="fas fa-search"></i> Search</a></li>
+      <li><a href="404.html"><i class="fas fa-download"></i> Downloads</a></li>
+    </ul>
+
+    <div class="mobile-profile">
+      <img src="hr4.webp" alt="profile">
+      <div>
+        <a href="profile.html" style="color:white; text-decoration:none; font-weight:600;">My Profile</a>
+        <div style="color:#aaa; font-size:0.9rem;">View account</div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script>
+    (function() {
+      // ----- STACKLY OTT LOADER (3 SECONDS) -----
+      const loader = document.getElementById('stacklyLoader');
+      const userCount = document.getElementById('userCount');
+      
+      // Animate user count from 0 to 125K
+      let count = 0;
+      const targetCount = 125000;
+      const interval = setInterval(function() {
+        count += 1250;
+        if (count >= targetCount) {
+          count = targetCount;
+          clearInterval(interval);
+        }
+        if (count >= 1000) {
+          userCount.textContent = (count / 1000).toFixed(1) + 'K';
+        } else {
+          userCount.textContent = count;
+        }
+      }, 60);
+
+      // Hide loader after 3 seconds
+      setTimeout(function() {
+        loader.classList.add('fade-out');
+        
+        setTimeout(function() {
+          loader.style.display = 'none';
+        }, 500);
+      }, 3000);
+
+      // ----- MOBILE MENU OPEN/CLOSE -----
+      const hamburger = document.getElementById('hamburgerBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const closeMobile = document.getElementById('closeMobile');
+      const overlay = document.getElementById('overlay');
+
+      function openMobile() {
+        mobileMenu.classList.add('active');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMobileMenu() {
+        mobileMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      hamburger.addEventListener('click', openMobile);
+      closeMobile.addEventListener('click', closeMobileMenu);
+      overlay.addEventListener('click', closeMobileMenu);
+
+      // close mobile menu when clicking any link
+      document.querySelectorAll('.mobile-links a').forEach(link => {
+        link.addEventListener('click', closeMobileMenu);
+      });
+
+      // escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          if (mobileMenu.classList.contains('active')) closeMobileMenu();
+        }
+      });
+
+      // resize
+      window.addEventListener('resize', function() {
+        if (window.innerWidth > 900 && mobileMenu.classList.contains('active')) {
+          closeMobileMenu();
+        }
+      });
+    })();
+  </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        /* ===== PROFILE HEADER ===== */
+        .profile-header {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            border-bottom: 3px solid #d32f2f;
+            padding: 2rem 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .profile-avatar {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #d32f2f;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(211, 47, 47, 0.5);
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-avatar .edit-avatar {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #d32f2f;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+            cursor: pointer;
+        }
+
+        .profile-info h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-info h1 span {
+            color: #d32f2f;
+        }
+
+        .profile-meta {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            color: #aaa;
+        }
+
+        .profile-meta i {
+            color: #d32f2f;
+            margin-right: 0.5rem;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .profile-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem 3rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 2rem 0 1.5rem;
+            border-left: 6px solid #d32f2f;
+            padding-left: 1rem;
+        }
+
+        .section-title i {
+            color: #d32f2f;
+            margin-right: 0.8rem;
+        }
+
+        /* ===== STATS CARDS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: #121212;
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 2px solid #2a2a2a;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: #d32f2f;
+            transform: translateY(-5px);
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            color: #d32f2f;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-card p {
+            color: #aaa;
+        }
+
+        /* ===== WATCHLIST ===== */
+        .watchlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .watchlist-card {
+            background: #121212;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid #2a2a2a;
+            transition: 0.3s;
+            text-decoration: none;
+            color: white;
+        }
+
+        .watchlist-card:hover {
+            transform: translateY(-5px);
+            border-color: #d32f2f;
+        }
+
+        .watchlist-img {
+            height: 140px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .watchlist-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #d32f2f;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid white;
+        }
+
+        .watchlist-info {
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .watchlist-info h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .watchlist-info span {
+            color: #d32f2f;
+            font-weight: 600;
+        }
+
+        /* ===== SETTINGS FORM ===== */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .settings-card {
+            background: #121212;
+            border-radius: 20px;
+            padding: 1.8rem;
+            border: 2px solid #2a2a2a;
+        }
+
+        .settings-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: #d32f2f;
+        }
+
+        .settings-item {
+            margin-bottom: 1.2rem;
+        }
+
+        .settings-item label {
+            display: block;
+            color: #aaa;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .settings-item input, .settings-item select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .settings-item input:focus, .settings-item select:focus {
+            outline: none;
+            border-color: #d32f2f;
+        }
+
+        .btn {
+            background: #d32f2f;
+            color: white;
+            border: 2px solid white;
+            padding: 0.8rem 2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.3s;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background: white;
+            color: #d32f2f;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border-color: #d32f2f;
+        }
+
+        /* ===== ACTIVITY LOG ===== */
+        .activity-list {
+            background: #121212;
+            border-radius: 20px;
+            border: 2px solid #2a2a2a;
+            overflow: hidden;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background: #1a1a1a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d32f2f;
+        }
+
+        .activity-detail {
+            flex: 1;
+        }
+
+        .activity-detail p {
+            font-weight: 500;
+        }
+
+        .activity-detail small {
+            color: #aaa;
+        }
+
+        .activity-time {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        /* ===== BILLING SECTION ===== */
+        .billing-card {
+            background: #121212;
+            border-radius: 20px;
+            padding: 1.8rem;
+            border: 2px solid #2a2a2a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .plan-info h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .plan-info .price {
+            color: #d32f2f;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .plan-info .renewal {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* ===== DEVICES SECTION ===== */
+        .devices-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .device-card {
+            background: #121212;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 2px solid #2a2a2a;
+        }
+
+        .device-card i {
+            font-size: 2.5rem;
+            color: #d32f2f;
+            margin-bottom: 1rem;
+        }
+
+        .device-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .device-card p {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* ===== BUTTON GROUP ===== */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media screen and (max-width: 700px) {
+            .profile-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .profile-meta {
+                justify-content: center;
+            }
+            .section-title {
+                font-size: 1.5rem;
+            }
+            .billing-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== PROFILE HEADER ===== -->
+<header class="profile-header">
+    <div class="profile-container">
+        <div class="profile-avatar">
+            <img src="hr4.webp" alt="Profile">
+            <a href="404.html" class="edit-avatar"><i class="fas fa-camera"></i></a>
+        </div>
+        <div class="profile-info">
+            <h1>RAHUL <span>SHARMA</span></h1>
+            <div class="profile-meta">
+                <div><i class="fas fa-envelope"></i> rahul.sharma@email.com</div>
+                <div><i class="fas fa-phone"></i> +91 98765 43210</div>
+                <div><i class="fas fa-map-marker-alt"></i> Mumbai, India</div>
+            </div>
+            <div class="profile-meta" style="margin-top: 0.5rem;">
+                <div><i class="fas fa-calendar"></i> Member since 2022</div>
+                <div><i class="fas fa-globe"></i> Premium Plan</div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ===== MAIN PROFILE CONTENT ===== -->
+<main class="profile-main">
+
+    <!-- STATS SECTION -->
+    <div class="section-title">
+        <i class="fas fa-chart-simple"></i> STATISTICS
+    </div>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <i class="fas fa-film"></i>
+            <h3>247</h3>
+            <p>Movies Watched</p>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-tv"></i>
+            <h3>89</h3>
+            <p>TV Shows</p>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-clock"></i>
+            <h3>1,284</h3>
+            <p>Hours Streamed</p>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-download"></i>
+            <h3>56</h3>
+            <p>Downloads</p>
+        </div>
+    </div>
+
+    <!-- WATCHLIST SECTION -->
+    <div class="section-title">
+        <i class="fas fa-bookmark"></i> MY WATCHLIST
+    </div>
+    <div class="watchlist-grid">
+        <a href="404.html" class="watchlist-card">
+            <div class="watchlist-img" style="background-image: url('gujarathi3.webp');">
+                <span class="watchlist-badge">NEW</span>
+            </div>
+            <div class="watchlist-info">
+                <h4>Mission: Unbreakable</h4>
+                <span>98%</span>
+            </div>
+        </a>
+        <a href="404.html" class="watchlist-card">
+            <div class="watchlist-img" style="background-image: url('footbal2.webp');"></div>
+            <div class="watchlist-info">
+                <h4>The Last Kingdom</h4>
+                <span>94%</span>
+            </div>
+        </a>
+        <a href="404.html" class="watchlist-card">
+            <div class="watchlist-img" style="background-image: url('img20.webp');">
+                <span class="watchlist-badge">EXCLUSIVE</span>
+            </div>
+            <div class="watchlist-info">
+                <h4>Beyond Infinity</h4>
+                <span>96%</span>
+            </div>
+        </a>
+        <a href="404.html" class="watchlist-card">
+            <div class="watchlist-img" style="background-image: url('img21.webp');"></div>
+            <div class="watchlist-info">
+                <h4>Love in Tokyo</h4>
+                <span>88%</span>
+            </div>
+        </a>
+    </div>
+
+    
+      
+    <!-- RECENT ACTIVITY -->
+    <div class="section-title">
+        <i class="fas fa-clock-rotate-left"></i> RECENT ACTIVITY
+    </div>
+    <div class="activity-list">
+        <div class="activity-item">
+            <div class="activity-icon"><i class="fas fa-play"></i></div>
+            <div class="activity-detail">
+                <p>Watched "Mission: Unbreakable"</p>
+                <small>Action • 2h 28m</small>
+            </div>
+            <div class="activity-time">2 hours ago</div>
+        </div>
+        <div class="activity-item">
+            <div class="activity-icon"><i class="fas fa-download"></i></div>
+            <div class="activity-detail">
+                <p>Downloaded "The Last Kingdom"</p>
+                <small>Season 2, Episode 5</small>
+            </div>
+            <div class="activity-time">Yesterday</div>
+        </div>
+        <div class="activity-item">
+            <div class="activity-icon"><i class="fas fa-star"></i></div>
+            <div class="activity-detail">
+                <p>Rated "Beyond Infinity" ★★★★★</p>
+                <small>Sci-Fi • 2026</small>
+            </div>
+            <div class="activity-time">3 days ago</div>
+        </div>
+        <div class="activity-item">
+            <div class="activity-icon"><i class="fas fa-list"></i></div>
+            <div class="activity-detail">
+                <p>Added "Love in Tokyo" to watchlist</p>
+                <small>Romance • 1h 58m</small>
+            </div>
+            <div class="activity-time">5 days ago</div>
+        </div>
+    </div>
+
+    <!-- SUBSCRIPTION & BILLING -->
+    <div class="section-title">
+        <i class="fas fa-credit-card"></i> SUBSCRIPTION & BILLING
+    </div>
+    <div class="billing-card">
+        <div class="plan-info">
+            <h4>Premium Plan</h4>
+            <div class="price">$14.99<span style="font-size:1rem; color:#aaa;">/month</span></div>
+            <div class="renewal">Next billing: April 20, 2026</div>
+        </div>
+        <div class="button-group">
+            <a href="404.html" class="btn">Manage Plan</a>
+            <a href="404.html" class="btn btn-outline">Billing History</a>
+        </div>
+    </div>
+
+    <!-- CONNECTED DEVICES -->
+    <div class="section-title">
+        <i class="fas fa-device"></i> CONNECTED DEVICES
+    </div>
+    <div class="devices-grid">
+        <div class="device-card">
+            <i class="fas fa-mobile-alt"></i>
+            <h4>iPhone 15</h4>
+            <p>Last active: Now</p>
+        </div>
+        <div class="device-card">
+            <i class="fas fa-laptop"></i>
+            <h4>MacBook Pro</h4>
+            <p>Last active: 2h ago</p>
+        </div>
+        <div class="device-card">
+            <i class="fas fa-tv"></i>
+            <h4>Samsung TV</h4>
+            <p>Last active: Yesterday</p>
+        </div>
+        <div class="device-card">
+            <i class="fas fa-tablet-alt"></i>
+            <h4>iPad Air</h4>
+            <p>Last active: 3d ago</p>
+        </div>
+    </div>
+
+    <!-- PROFILE ACTIONS -->
+    <div class="button-group" style="justify-content: center; margin: 3rem 0;">
+        <a href="index.html" class="btn"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+        <a href="404.html" class="btn btn-outline"><i class="fas fa-trash"></i> Delete Account</a>
+        <a href="404.html" class="btn btn-outline"><i class="fas fa-headset"></i> Help Center</a>
+    </div>
+
+</main>
+
+
+
+</body>
+</html>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        /* ========== STACKLY OTT FOOTER ========== */
+        .footer {
+            background: #000000;
+            border-top: 4px solid #d32f2f;
+            padding: 2.5rem 1.5rem 1rem;
+            color: #ffffff;
+            width: 100%;
+        }
+
+        .footer-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        /* logo section */
+        .footer-logo-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .footer-logo {
+            height: auto;
+            width: 140px;
+            display: block;
+            filter: drop-shadow(0 0 8px #d32f2f);
+        }
+
+        .footer-tagline {
+            color: #aaa;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            max-width: 220px;
+        }
+
+        .footer-app-badges {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .app-badge {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 40px;
+            padding: 0.4rem 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: white;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .app-badge i {
+            color: #d32f2f;
+            font-size: 1.2rem;
+        }
+
+        .app-badge:hover {
+            border-color: #d32f2f;
+            background: #2a2a2a;
+        }
+
+        .app-badge span {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            line-height: 1.2;
+        }
+
+        .app-badge span small {
+            font-size: 0.55rem;
+            color: #aaa;
+        }
+
+        .app-badge span strong {
+            font-size: 0.8rem;
+        }
+
+        /* footer sections */
+        .footer-section h3 {
+            color: #d32f2f;
+            font-size: 1.1rem;
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+            border-left: 4px solid #d32f2f;
+            padding-left: 10px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section ul li a {
+            color: #dddddd;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .footer-section ul li a i {
+            color: #d32f2f;
+            width: 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-section ul li a:hover {
+            color: #d32f2f;
+            transform: translateX(5px);
+        }
+
+        .contact-info {
+            margin-top: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.8rem;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .contact-item i {
+            color: #d32f2f;
+            width: 1.2rem;
+            font-size: 1rem;
+        }
+
+        /* newsletter */
+        .newsletter-wrapper {
+            max-width: 1300px;
+            margin: 2.5rem auto 0;
+            padding: 0;
+        }
+
+        .newsletter {
+            background: #0f0f0f;
+            border-radius: 60px;
+            padding: 1.5rem 2rem;
+            border: 1px solid #333;
+        }
+
+        .newsletter-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .newsletter-text {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .newsletter-text i {
+            color: #d32f2f;
+            font-size: 2rem;
+        }
+
+        .newsletter-text h4 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .newsletter-text p {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+            flex: 1;
+            max-width: 500px;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 60px;
+            padding: 0.8rem 1.2rem;
+            color: white;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .newsletter-form input:focus {
+            border-color: #d32f2f;
+        }
+
+        .newsletter-form button {
+            background: #d32f2f;
+            border: 2px solid white;
+            color: white;
+            font-weight: 700;
+            padding: 0.8rem 1.8rem;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .newsletter-form button:hover {
+            background: white;
+            color: #d32f2f;
+        }
+
+        /* footer bottom */
+        .footer-bottom {
+            max-width: 1300px;
+            margin: 2rem auto 0;
+            padding-top: 1.5rem;
+            border-top: 2px solid #1a1a1a;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .copyright p {
+            color: #777;
+            font-size: 0.85rem;
+        }
+
+        .copyright a {
+            color: #d32f2f;
+            text-decoration: none;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .social-links a {
+            color: white;
+            background: #1a1a1a;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #333;
+            transition: 0.2s;
+            font-size: 1rem;
+        }
+
+        .social-links a:hover {
+            background: #d32f2f;
+            border-color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-bottom-links a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+
+        .footer-bottom-links a:hover {
+            color: #d32f2f;
+        }
+
+        .extra-note {
+            max-width: 1300px;
+            margin: 1.5rem auto 0;
+            text-align: center;
+            color: #555;
+            font-size: 0.75rem;
+            border-top: 1px solid #222;
+            padding-top: 1.2rem;
+        }
+
+        /* ========== MOBILE VIEW OPTIMIZATION ========== */
+        @media screen and (max-width: 900px) {
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem 1.5rem;
+            }
+            
+            .footer-logo-section {
+                grid-column: span 2;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .footer-tagline {
+                text-align: center;
+                max-width: 100%;
+            }
+            
+            .footer-app-badges {
+                justify-content: center;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .footer {
+                padding: 2rem 1rem 1rem;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .footer-logo-section {
+                grid-column: span 1;
+            }
+            
+            .footer-section {
+                text-align: center;
+            }
+            
+            .footer-section h3 {
+                border-left: none;
+                border-bottom: 3px solid #d32f2f;
+                padding-left: 0;
+                padding-bottom: 0.5rem;
+                display: inline-block;
+            }
+            
+            .footer-section ul li a {
+                justify-content: center;
+            }
+            
+            .contact-item {
+                justify-content: center;
+            }
+            
+            .newsletter-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .newsletter-text {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .newsletter-form {
+                width: 100%;
+                flex-direction: column;
+            }
+            
+            .newsletter-form button {
+                width: 100%;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .social-links {
+                justify-content: center;
+            }
+            
+            .footer-bottom-links {
+                justify-content: center;
+            }
+        }
+
+        @media screen and (max-width: 400px) {
+            .footer-app-badges {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .app-badge {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .footer-bottom-links {
+                gap: 1rem;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ========== STACKLY OTT FOOTER (MOBILE OPTIMIZED) ========== -->
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Column 1: Logo + App badges -->
+            <div class="footer-logo-section">
+                <img class="footer-logo" src="stacklylogo (1).webp" alt="Stackly Logo" onerror="this.src='https://via.placeholder.com/140x45/d32f2f/ffffff?text=STACKLY'">
+                <p class="footer-tagline">Stream unlimited movies, live sports, kids shows & originals in 4K.</p>
+                
+                <!-- App download badges -->
+                <div class="footer-app-badges">
+                    <a href="404.html" class="app-badge">
+                        <i class="fab fa-apple"></i>
+                        <span>
+                            <small>Download on</small>
+                            <strong>App Store</strong>
+                        </span>
+                    </a>
+                    <a href="404.html" class="app-badge">
+                        <i class="fab fa-google-play"></i>
+                        <span>
+                            <small>Get it on</small>
+                            <strong>Google Play</strong>
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Column 2: Explore -->
+            <div class="footer-section">
+                <h3><i class="fas fa-compass"></i> Explore</h3>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="movies.html"><i class="fas fa-film"></i> Movies</a></li>
+                    <li><a href="sports.html"><i class="fas fa-futbol"></i> Sports</a></li>
+                    <li><a href="kids.html"><i class="fas fa-child"></i> Kids Bab </a></li>
+                    <li><a href="about.html"><i class="fas fa-tv"></i> About</a></li>
+                      <li><a href="contact.html"><i class="fas fa-tv"></i> Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Company -->
+            <div class="footer-section">
+                <h3><i class="fas fa-info-circle"></i> Company</h3>
+                <ul>
+                    <li><a href="404.html"><i class="fas fa-info-circle"></i> Blog Us</a></li>
+                    <li><a href="404.html"><i class="fas fa-briefcase"></i> Careers</a></li>
+                    <li><a href="404.html"><i class="fas fa-newspaper"></i>     Subscribe</a></li>
+                    <li><a href="404.html"><i class="fas fa-envelope"></i> Contact</a></li>
+                    <li><a href="404.html"><i class="fas fa-blog"></i> Blog</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4: Support & Contact -->
+            <div class="footer-section">
+                <h3><i class="fas fa-life-ring"></i> Support</h3>
+                <ul>
+                    <li><a href="404.html"><i class="fas fa-question-circle"></i> Help Center</a></li>
+                    <li><a href="404.html"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
+                    <li><a href="404.html"><i class="fas fa-gavel"></i> Terms of Use</a></li>
+                    <li><a href="404.html"><i class="fas fa-cookie-bite"></i>  Preferences</a></li>
+                    <li><a href="404.html"><i class="fas fa-ad"></i> Ad Choices</a></li>
+                </ul>
+                
+                
+            </div>
+        </div>
+
+        <!-- Newsletter Section -->
+<div class="newsletter-wrapper">
+    <div class="newsletter">
+        <div class="newsletter-content">
+            <div class="newsletter-text">
+                <i class="fas fa-envelope-open-text"></i>
+                <div>
+                    <h4>Subscribe to our newsletter</h4>
+                    <p>Get the latest updates on new releases & offers</p>
+                </div>
+            </div>
+
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" id="emailInput" placeholder="Your email address" required>
+                <button type="submit">Subscribe</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById("newsletterForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let email = document.getElementById("emailInput").value;
+
+    if(email === "") {
+        alert("Please enter your email!");
+        return;
+    }
+
+    // Redirect to 404 page
+    window.location.href = "404.html"; // change if your file name is different
+});
+</script>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <div class="copyright">
+                <p>© 2026 Stackly OTT. All rights reserved. | <a href="404.html">Privacy</a> | <a href="404.html">Terms</a></p>
+            </div>
+            
+            <div class="footer-bottom-links">
+                <a href="404.html">Sitemap</a>
+                <a href="404.html">Accessibility</a>
+                <a href="404.html">Your Privacy Choices</a>
+            </div>
+
+            <div class="social-links">
+                <a href="404.html" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="404.html" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="404.html" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="404.html" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="404.html" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+
+        <!-- Extra note -->
+        <div class="extra-note">
+            <p>Stackly OTT is a premium entertainment platform. All content and trademarks are property of their respective owners.</p>
+        </div>
+    </footer>
+</body>
+</html>
