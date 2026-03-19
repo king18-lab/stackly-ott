@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>404 | Stackly OTT</title>
+
+<style>
+
+/* PAGE */
+#stacklyOTT404Container{
+min-height:100vh;
+width:100%;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+text-align:center;
+background:linear-gradient(135deg,#000000,#1a1a1a);
+color:white;
+font-family:'Inter', Arial, sans-serif;
+padding:40px 20px;
+position:relative;
+overflow:hidden;
+}
+
+/* 404 NUMBER */
+#stacklyOTT404Number{
+font-size:clamp(70px,12vw,140px);
+font-weight:700;
+letter-spacing:6px;
+margin-bottom:10px;
+color: #d32f2f;
+text-shadow: 0 0 30px rgba(211, 47, 47, 0.5);
+}
+
+/* TITLE */
+#stacklyOTT404Title{
+font-size:clamp(22px,5vw,40px);
+margin-bottom:12px;
+color: white;
+}
+
+/* DESCRIPTION */
+#stacklyOTT404Desc{
+font-size:clamp(15px,3vw,18px);
+max-width:600px;
+line-height:1.6;
+opacity:0.8;
+margin-bottom:35px;
+color: #cccccc;
+}
+
+/* BUTTON CONTAINER */
+#stacklyOTT404Buttons{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+justify-content:center;
+margin-bottom:20px;
+}
+
+/* BUTTON - HOME */
+#stacklyOTT404HomeBtn{
+padding:14px 28px;
+border:2px solid #d32f2f;
+background:transparent;
+color:#d32f2f;
+font-size:16px;
+cursor:pointer;
+transition:0.3s;
+border-radius:40px;
+min-width:160px;
+font-weight:600;
+}
+
+#stacklyOTT404HomeBtn:hover{
+background:#d32f2f;
+color:white;
+transform:scale(1.05);
+box-shadow:0 0 20px rgba(211, 47, 47, 0.5);
+}
+
+/* BUTTON - PREVIOUS PAGE */
+#stacklyOTT404PrevBtn{
+padding:14px 28px;
+border:2px solid #3b82f6;
+background:transparent;
+color:#3b82f6;
+font-size:16px;
+cursor:pointer;
+transition:0.3s;
+border-radius:40px;
+min-width:160px;
+font-weight:600;
+}
+
+#stacklyOTT404PrevBtn:hover{
+background:#3b82f6;
+color:white;
+transform:scale(1.05);
+box-shadow:0 0 20px rgba(59, 130, 246, 0.5);
+}
+
+/* FILM ICON DECORATION */
+#stacklyOTT404Film{
+position:absolute;
+top:10%;
+left:5%;
+width:120px;
+height:120px;
+opacity:0.15;
+animation:spinFilm 12s linear infinite;
+}
+
+#stacklyOTT404Film span{
+display:block;
+width:20px;
+height:20px;
+background:#d32f2f;
+margin:15px auto;
+position:relative;
+}
+
+#stacklyOTT404Film span::before,
+#stacklyOTT404Film span::after{
+content:'';
+position:absolute;
+width:30px;
+height:4px;
+background:#d32f2f;
+top:8px;
+left:-5px;
+}
+
+#stacklyOTT404Film span::after{
+width:4px;
+height:30px;
+top:-5px;
+left:8px;
+}
+
+/* FLOAT CIRCLE */
+#stacklyOTT404Circle{
+position:absolute;
+bottom:-80px;
+right:-80px;
+width:300px;
+height:300px;
+border-radius:50%;
+background:rgba(211, 47, 47, 0.05);
+animation:floatCircle 8s ease-in-out infinite;
+}
+
+/* PLAY ICON DECORATION */
+#stacklyOTT404Play{
+position:absolute;
+top:70%;
+right:8%;
+width:80px;
+height:80px;
+opacity:0.15;
+animation:pulse 2s ease-in-out infinite;
+}
+
+#stacklyOTT404Play i{
+font-size:80px;
+color:#d32f2f;
+}
+
+/* ANIMATIONS */
+@keyframes spinFilm{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
+}
+
+@keyframes floatCircle{
+0%,100%{transform:translateY(0px);}
+50%{transform:translateY(-30px);}
+}
+
+@keyframes pulse{
+0%,100%{transform:scale(1);opacity:0.15;}
+50%{transform:scale(1.1);opacity:0.25;}
+}
+
+/* MOBILE */
+@media(max-width:600px){
+#stacklyOTT404Buttons{
+flex-direction:column;
+gap:12px;
+width:100%;
+max-width:280px;
+}
+
+#stacklyOTT404HomeBtn,
+#stacklyOTT404PrevBtn{
+width:100%;
+}
+}
+
+@media(max-width:400px){
+#stacklyOTT404Desc{
+font-size:14px;
+}
+}
+
+</style>
+<!-- Add Font Awesome for play icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+
+<div id="stacklyOTT404Container">
+
+<div id="stacklyOTT404Number">404</div>
+
+<div id="stacklyOTT404Title">
+Page Not Found
+</div>
+
+<div id="stacklyOTT404Desc">
+The page you're looking for cannot be found in the Stackly OTT platform.
+It may have been moved or removed from our streaming library.
+</div>
+
+<!-- BUTTONS -->
+<div id="stacklyOTT404Buttons">
+<button id="stacklyOTT404HomeBtn" onclick="goHome()">
+<i class="fas fa-home"></i> Home Page
+</button>
+
+<button id="stacklyOTT404PrevBtn" onclick="goToPreviousPage()">
+<i class="fas fa-arrow-left"></i> Previous Page
+</button>
+</div>
+
+<!-- Navigation info -->
+<div style="font-size: 12px; color: #666; margin-top: 20px;">
+Click "Previous Page" to return to the last page you visited
+</div>
+
+</div>
+
+<!-- Film decoration (replacing DNA) -->
+<div id="stacklyOTT404Film">
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+</div>
+
+<!-- Circle decoration -->
+<div id="stacklyOTT404Circle"></div>
+
+<!-- Play icon decoration -->
+<div id="stacklyOTT404Play">
+<i class="fas fa-play"></i>
+</div>
+
+<!-- JS -->
+<script>
+
+/* Go Home */
+function goHome(){
+window.location.href = "index.html";
+}
+
+/* Go to Previous Page */
+function goToPreviousPage(){
+// Try to go back in history
+if (window.history.length > 1) {
+window.history.back();
+} else {
+// If no history, go to home
+window.location.href = "index.html";
+}
+}
+
+// Optional: Log history length for debugging
+console.log('History length:', window.history.length);
+console.log('Referrer:', document.referrer);
+
+</script>
+
+</body>
+</html>

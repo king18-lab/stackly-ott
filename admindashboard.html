@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Stackly OTT</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+
+        :root {
+            --red-primary: #d32f2f;
+            --red-dark: #b71c1c;
+            --red-light: #ef5350;
+            --black-dark: #000000;
+            --black-medium: #1a1a1a;
+            --black-light: #2d2d2d;
+            --white: #ffffff;
+            --white-dark: #f5f5f5;
+            --gray-light: #e0e0e0;
+            --gray-medium: #9e9e9e;
+        }
+
+        body {
+            background-color: var(--black-dark);
+            min-height: 100vh;
+            color: var(--white);
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: var(--black-medium);
+            box-shadow: 0 2px 10px rgba(211, 47, 47, 0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--red-primary);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--red-primary);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .nav-logo span {
+            color: var(--white);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .nav-link:hover {
+            color: var(--red-primary);
+            background: rgba(211, 47, 47, 0.1);
+        }
+
+        .nav-link.active {
+            color: var(--red-primary);
+            background: rgba(211, 47, 47, 0.15);
+            font-weight: 600;
+            border-left: 3px solid var(--red-primary);
+        }
+
+        .nav-link i {
+            width: 18px;
+            height: 18px;
+        }
+
+        .profile-dropdown {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            background: var(--black-light);
+            border-radius: 40px;
+            border: 1px solid var(--red-primary);
+        }
+
+        .profile-btn img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--red-primary);
+        }
+
+        .profile-btn span {
+            color: var(--white);
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: var(--black-medium);
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(211, 47, 47, 0.3);
+            width: 250px;
+            display: none;
+            z-index: 1000;
+            border: 1px solid var(--red-primary);
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--red-primary);
+        }
+
+        .dropdown-header h4 {
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .dropdown-header p {
+            color: var(--gray-medium);
+            font-size: 13px;
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--white);
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .dropdown-item:hover {
+            background: var(--black-light);
+            color: var(--red-primary);
+        }
+
+        .dropdown-item i {
+            width: 18px;
+            height: 18px;
+            color: var(--red-primary);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 6px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--white);
+            transition: 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 70px;
+            left: -100%;
+            width: 100%;
+            height: calc(100vh - 70px);
+            background: var(--black-medium);
+            transition: 0.3s;
+            z-index: 999;
+            overflow-y: auto;
+            border-top: 2px solid var(--red-primary);
+        }
+
+        .mobile-menu.active {
+            left: 0;
+        }
+
+        .mobile-nav-links {
+            padding: 2rem;
+        }
+
+        .mobile-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            color: var(--white);
+            text-decoration: none;
+            border-bottom: 1px solid var(--red-primary);
+            transition: 0.3s;
+        }
+
+        .mobile-nav-link:hover {
+            background: var(--black-light);
+            color: var(--red-primary);
+        }
+
+        .mobile-nav-link i {
+            width: 20px;
+            height: 20px;
+            color: var(--red-primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            padding: 2rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Welcome Banner */
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--black-medium), var(--black-light));
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border-left: 6px solid var(--red-primary);
+            border-right: 6px solid var(--red-primary);
+        }
+
+        .welcome-banner h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .welcome-banner h1 span {
+            color: var(--red-primary);
+        }
+
+        .welcome-banner p {
+            opacity: 0.9;
+            color: var(--gray-medium);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--black-medium);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(211, 47, 47, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: 0.3s;
+            cursor: pointer;
+            border: 1px solid var(--black-light);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--red-primary);
+            box-shadow: 0 5px 20px rgba(211, 47, 47, 0.3);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(211, 47, 47, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon i {
+            width: 24px;
+            height: 24px;
+            color: var(--red-primary);
+        }
+
+        .stat-info h3 {
+            font-size: 14px;
+            color: var(--gray-medium);
+            margin-bottom: 4px;
+        }
+
+        .stat-info p {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        /* Section Title */
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            margin-top: 2rem;
+            border-bottom: 2px solid var(--red-primary);
+            padding-bottom: 10px;
+        }
+
+        .section-title h2 {
+            color: var(--white);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title h2 i {
+            color: var(--red-primary);
+        }
+
+        .view-all {
+            color: var(--red-primary);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .view-all:hover {
+            text-decoration: underline;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .content-card {
+            background: var(--black-medium);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--black-light);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--red-primary);
+            box-shadow: 0 5px 20px rgba(211, 47, 47, 0.3);
+        }
+
+        .content-img {
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .content-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--red-primary);
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .content-info {
+            padding: 1.5rem;
+        }
+
+        .content-info h3 {
+            color: var(--white);
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .content-info p {
+            color: var(--gray-medium);
+            font-size: 14px;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .content-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 1rem;
+            font-size: 13px;
+            color: var(--gray-medium);
+        }
+
+        .content-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .content-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .content-btn {
+            flex: 1;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--red-primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--red-dark);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--red-primary);
+            color: var(--red-primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--red-primary);
+            color: var(--white);
+        }
+
+        /* Users List */
+        .users-list {
+            background: var(--black-medium);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            border: 1px solid var(--black-light);
+        }
+
+        .user-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid var(--black-light);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .user-item:hover {
+            background: var(--black-light);
+        }
+
+        .user-item:last-child {
+            border-bottom: none;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(211, 47, 47, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--red-primary);
+            border: 2px solid var(--red-primary);
+        }
+
+        .user-details h4 {
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .user-details p {
+            color: var(--gray-medium);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: rgba(211, 47, 47, 0.2);
+            color: var(--red-primary);
+        }
+
+        .status-inactive {
+            background: var(--black-light);
+            color: var(--gray-medium);
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .user-btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Analytics Cards */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .analytics-card {
+            background: var(--black-medium);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--red-primary);
+        }
+
+        .analytics-card h3 {
+            font-size: 14px;
+            color: var(--gray-medium);
+            margin-bottom: 8px;
+        }
+
+        .analytics-card .number {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .analytics-card .trend {
+            font-size: 12px;
+            color: var(--red-primary);
+            margin-top: 5px;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quick-action-btn {
+            background: var(--black-medium);
+            border: 1px solid var(--black-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .quick-action-btn:hover {
+            border-color: var(--red-primary);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(211, 47, 47, 0.2);
+        }
+
+        .quick-action-btn i {
+            width: 30px;
+            height: 30px;
+            color: var(--red-primary);
+        }
+
+        .quick-action-btn span {
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .welcome-banner h1 {
+                font-size: 24px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .user-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .user-info {
+                width: 100%;
+            }
+
+            .user-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+            
+            .content-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">STACKLY<span>OTT</span></a>
+
+            <!-- Desktop Menu - 5 Nav Items -->
+            <div class="nav-menu">
+                <a href="#" class="nav-link active" onclick="showSection('dashboard'); return false;">
+                    <i data-lucide="home"></i> Dashboard
+                </a>
+                <a href="#" class="nav-link" onclick="showSection('content'); return false;">
+                    <i data-lucide="film"></i> Content
+                </a>
+                <a href="#" class="nav-link" onclick="showSection('users'); return false;">
+                    <i data-lucide="users"></i> Users
+                </a>
+                <a href="#" class="nav-link" onclick="showSection('analytics'); return false;">
+                    <i data-lucide="bar-chart-2"></i> Analytics
+                </a>
+                <a href="#" class="nav-link" onclick="showSection('messages'); return false;">
+                    <i data-lucide="message-circle"></i> Messages
+                </a>
+                
+                <!-- Profile Dropdown -->
+                <div class="profile-dropdown" id="profileDropdown">
+                    <div class="profile-btn" onclick="toggleDropdown()">
+                        <img src="hr4.webp" alt="Profile">
+                        <span id="profileEmail">admin@stackly.com</span>
+                        <i data-lucide="chevron-down"></i>
+                    </div>
+                    <div class="dropdown-content" id="dropdownContent">
+                        <div class="dropdown-header">
+                            <h4 id="dropdownName">Admin User</h4>
+                            <p id="dropdownEmail">admin@stackly.com</p>
+                        </div>
+                        <a href="#" class="dropdown-item" onclick="window.location.href='404.html'">
+                            <i data-lucide="user"></i> My Profile
+                        </a>
+                        <a href="#" class="dropdown-item" onclick="window.location.href='404.html'">
+                            <i data-lucide="settings"></i> Settings
+                        </a>
+                        <a href="#" class="dropdown-item" onclick="window.location.href='404.html'">
+                            <i data-lucide="shield"></i> Security
+                        </a>
+                        <a href="index.html" class="dropdown-item" onclick="window.location.href='404.html'">
+                            <i data-lucide="log-out"></i> Back To Home
+                        </a>
+                        <a href="login.html" class="dropdown-item" onclick="logout()">
+                            <i data-lucide="log-out"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hamburger Menu -->
+            <div class="hamburger" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-nav-links">
+            <a href="#" class="mobile-nav-link" onclick="showSection('dashboard'); toggleMobileMenu(); return false;">
+                <i data-lucide="home"></i> Dashboard
+            </a>
+            <a href="#" class="mobile-nav-link" onclick="showSection('content'); toggleMobileMenu(); return false;">
+                <i data-lucide="film"></i> Content
+            </a>
+            <a href="#" class="mobile-nav-link" onclick="showSection('users'); toggleMobileMenu(); return false;">
+                <i data-lucide="users"></i> Users
+            </a>
+            <a href="#" class="mobile-nav-link" onclick="showSection('analytics'); toggleMobileMenu(); return false;">
+                <i data-lucide="bar-chart-2"></i> Analytics
+            </a>
+            <a href="#" class="mobile-nav-link" onclick="showSection('messages'); toggleMobileMenu(); return false;">
+                <i data-lucide="message-circle"></i> Messages
+            </a>
+            <div style="border-top: 1px solid var(--red-primary); margin: 1rem 0;"></div>
+            <a href="#" class="mobile-nav-link" onclick="window.location.href='404.html'">
+                <i data-lucide="user"></i> My Profile
+            </a>
+            <a href="#" class="mobile-nav-link" onclick="window.location.href='404.html'">
+                <i data-lucide="settings"></i> Settings
+            </a>
+            <a href="#" class="mobile-nav-link" onclick="window.location.href='404.html'">
+                <i data-lucide="shield"></i> Security
+            </a>
+            <a href="index.html" class="mobile-nav-link" onclick="window.location.href='404.html'">
+                <i data-lucide="log-out"></i> Back To Home
+            </a>
+            <a href="login.html" class="mobile-nav-link" onclick="logout()">
+                <i data-lucide="log-out"></i> Logout
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- DASHBOARD SECTION -->
+        <div id="dashboard-section">
+            <!-- Welcome Banner -->
+            <div class="welcome-banner">
+                <h1>Welcome back, <span id="welcomeName">Admin</span>!</h1>
+                <p id="welcomeEmail">admin@stackly.com</p>
+            </div>
+
+            <!-- Analytics Cards -->
+            <div class="analytics-grid">
+                <div class="analytics-card" onclick="window.location.href='404.html'">
+                    <h3>Total Revenue</h3>
+                    <div class="number">$124.5K</div>
+                    <div class="trend">↑ 12.5% from last month</div>
+                </div>
+                <div class="analytics-card" onclick="window.location.href='404.html'">
+                    <h3>Active Users</h3>
+                    <div class="number">45.2K</div>
+                    <div class="trend">↑ 8.3% from last month</div>
+                </div>
+                <div class="analytics-card" onclick="window.location.href='404.html'">
+                    <h3>Content Items</h3>
+                    <div class="number">1,284</div>
+                    <div class="trend">↑ 24 new this week</div>
+                </div>
+                <div class="analytics-card" onclick="window.location.href='404.html'">
+                    <h3>Avg. Watch Time</h3>
+                    <div class="number">42m</div>
+                    <div class="trend">↑ 5.2% from last week</div>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card" onclick="window.location.href='404.html'">
+                    <div class="stat-icon">
+                        <i data-lucide="film"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Movies</h3>
+                        <p>847</p>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="window.location.href='404.html'">
+                    <div class="stat-icon">
+                        <i data-lucide="tv"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>TV Shows</h3>
+                        <p>326</p>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="window.location.href='404.html'">
+                    <div class="stat-icon">
+                        <i data-lucide="mic"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Podcasts</h3>
+                        <p>111</p>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="window.location.href='404.html'">
+                    <div class="stat-icon">
+                        <i data-lucide="users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Subscribers</h3>
+                        <p>28.4K</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="section-title">
+                <h2><i data-lucide="zap"></i> Quick Actions</h2>
+            </div>
+            <div class="quick-actions">
+                <div class="quick-action-btn" onclick="window.location.href='404.html'">
+                    <i data-lucide="upload"></i>
+                    <span>Upload Content</span>
+                </div>
+                <div class="quick-action-btn" onclick="window.location.href='404.html'">
+                    <i data-lucide="user-plus"></i>
+                    <span>Add User</span>
+                </div>
+                <div class="quick-action-btn" onclick="window.location.href='404.html'">
+                    <i data-lucide="percent"></i>
+                    <span>Create Offer</span>
+                </div>
+                <div class="quick-action-btn" onclick="window.location.href='404.html'">
+                    <i data-lucide="bar-chart-2"></i>
+                    <span>View Reports</span>
+                </div>
+            </div>
+
+            <!-- Recent Users -->
+            <div class="section-title">
+                <h2><i data-lucide="users"></i> Recent Users</h2>
+                <span class="view-all" onclick="window.location.href='404.html'">View All <i data-lucide="arrow-right"></i></span>
+            </div>
+            
+            <div class="users-list">
+                <div class="user-item" onclick="window.location.href='404.html'">
+                    <div class="user-info">
+                        <div class="user-avatar">JD</div>
+                        <div class="user-details">
+                            <h4>John Doe</h4>
+                            <p><i data-lucide="mail"></i> john@example.com · Joined Mar 10, 2026</p>
+                        </div>
+                    </div>
+                    <div class="user-actions">
+                        <span class="user-status status-active">Active</span>
+                        <button class="user-btn btn-primary" onclick="event.stopPropagation(); window.location.href='404.html'">View</button>
+                    </div>
+                </div>
+                <div class="user-item" onclick="window.location.href='404.html'">
+                    <div class="user-info">
+                        <div class="user-avatar">JS</div>
+                        <div class="user-details">
+                            <h4>Jane Smith</h4>
+                            <p><i data-lucide="mail"></i> jane@example.com · Joined Mar 8, 2026</p>
+                        </div>
+                    </div>
+                    <div class="user-actions">
+                        <span class="user-status status-active">Active</span>
+                        <button class="user-btn btn-primary" onclick="event.stopPropagation(); window.location.href='404.html'">View</button>
+                    </div>
+                </div>
+                <div class="user-item" onclick="window.location.href='404.html'">
+                    <div class="user-info">
+                        <div class="user-avatar">MW</div>
+                        <div class="user-details">
+                            <h4>Mike Wilson</h4>
+                            <p><i data-lucide="mail"></i> mike@example.com · Joined Mar 5, 2026</p>
+                        </div>
+                    </div>
+                    <div class="user-actions">
+                        <span class="user-status status-inactive">Inactive</span>
+                        <button class="user-btn btn-primary" onclick="event.stopPropagation(); window.location.href='404.html'">View</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTENT SECTION (Hidden by default) -->
+        <div id="content-section" style="display: none;">
+            <div class="section-title">
+                <h2><i data-lucide="film"></i> Content Library</h2>
+                <span class="view-all" onclick="window.location.href='404.html'">Add New <i data-lucide="plus-circle"></i></span>
+            </div>
+            
+            <div class="content-grid">
+                <div class="content-card" onclick="window.location.href='404.html'">
+                    <div class="content-img" style="background-image: url('img1.webp');">
+                        <span class="content-badge">NEW</span>
+                    </div>
+                    <div class="content-info">
+                        <h3>Mission: Unbreakable</h3>
+                        <p>Action thriller with stunning visuals and intense storyline.</p>
+                        <div class="content-meta">
+                            <span><i data-lucide="clock"></i> 2h 28m</span>
+                            <span><i data-lucide="star"></i> 4.8</span>
+                            <span><i data-lucide="eye"></i> 12.4K views</span>
+                        </div>
+                        <div class="content-actions">
+                            <button class="content-btn btn-primary" onclick="event.stopPropagation(); window.location.href='404.html'">Edit</button>
+                            <button class="content-btn btn-outline" onclick="event.stopPropagation(); window.location.href='404.html'">Analytics</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-card" onclick="window.location.href='404.html'">
+                    <div class="content-img" style="background-image: url('gujarathi3.webp');">
+                    </div>
+                    <div class="content-info">
+                        <h3>The Last Kingdom</h3>
+                        <p>Epic historical drama series set in medieval times.</p>
+                        <div class="content-meta">
+                            <span><i data-lucide="clock"></i> 2h 10m</span>
+                            <span><i data-lucide="star"></i> 4.5</span>
+                            <span><i data-lucide="eye"></i> 8.2K views</span>
+                        </div>
+                        <div class="content-actions">
+                            <button class="content-btn btn-primary" onclick="event.stopPropagation(); window.location.href='404.html'">Edit</button>
+                            <button class="content-btn btn-outline" onclick="event.stopPropagation(); window.location.href='404.html'">Analytics</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-card" onclick="window.location.href='404.html'">
+                    <div class="content-img" style="background-image: url('hockey2.webp');">
+                        <span class="content-badge">EXCLUSIVE</span>
+                    </div>
+                    <div class="content-info">
+                        <h3>Beyond Infinity</h3>
+                        <p>Sci-fi masterpiece exploring the boundaries of space and time.</p>
+                        <div class="content-meta">
+                            <span><i data-lucide="clock"></i> 2h 45m</span>
+                            <span><i data-lucide="star"></i> 4.9</span>
+                            <span><i data-lucide="eye"></i> 15.7K views</span>
+                        </div>
+                        <div class="content-actions">
+                            <button class="content-btn btn-primary" onclick="event.stopPropagation(); window.location.href='404.html'">Edit</button>
+                            <button class="content-btn btn-outline" onclick="event.stopPropagation(); window.location.href='404.html'">Analytics</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-card" onclick="window.location.href='404.html'">
+                    <div class="content-img" style="background-image: url('img25.webp');">
+                    </div>
+                    <div class="content-info">
+                        <h3>Love in Tokyo</h3>
+                        <p>Romantic comedy set against the backdrop of Tokyo city.</p>
+                        <div class="content-meta">
+                            <span><i data-lucide="clock"></i> 1h 58m</span>
+                            <span><i data-lucide="star"></i> 4.3</span>
+                            <span><i data-lucide="eye"></i> 6.8K views</span>
+                        </div>
+                        <div class="content-actions">
+                            <button class="content-btn btn-primary" onclick="event.stopPropagation(); window.location.href='404.html'">Edit</button>
+                            <button class="content-btn btn-outline" onclick="event.stopPropagation(); window.location.href='404.html'">Analytics</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- USERS SECTION (Hidden by default) -->
+        <div id="users-section" style="display: none;">
+            <div class="section-title">
+                <h2><i data-lucide="users"></i> User Management</h2>
+                <span class="view-all" onclick="window.location.href='404.html'">Add User <i data-lucide="user-plus"></i></span>
+            </div>
+            
+            <div class="users-list">
+                <div class="user-item" onclick="window.location.href='404.html'">
+                    <div class="user-info">
+                        <div class="user-avatar">AD</div>
+                        <div class="user-details">
+                            <h4>Admin User</h4>
+                            <p><i data-lucide="mail"></i> admin@stackly.com · Role: Administrator</p>
+                        </div>
+                    </div>
+                    <div class="user-actions">
+                        <span class="user-status status-active">Active</span>
+                        <button class="user-btn btn-primary" onclick="event.stopPropagation(); window.location.href='404.html'">Manage</button>
+                    </div>
+                </div>
+                <div class="user-item" onclick="window.location.href='404.html'">
+                    <div class="user-info">
+                        <div class="user-avatar">MP</div>
+                        <div class="user-details">
+                            <h4>Mike Peterson</h4>
+                            <p><i data-lucide="mail"></i> mike.p@stackly.com · Role: Content Manager</p>
+                        </div>
+                    </div>
+                    <div class="user-actions">
+                        <span class="user-status status-active">Active</span>
+                        <button class="user-btn btn-primary" onclick="event.stopPropagation(); window.location.href='404.html'">Manage</button>
+                    </div>
+                </div>
+                <div class="user-item" onclick="window.location.href='404.html'">
+                    <div class="user-info">
+                        <div class="user-avatar">SR</div>
+                        <div class="user-details">
+                            <h4>Sarah Roberts</h4>
+                            <p><i data-lucide="mail"></i> sarah.r@stackly.com · Role: Editor</p>
+                        </div>
+                    </div>
+                    <div class="user-actions">
+                        <span class="user-status status-active">Active</span>
+                        <button class="user-btn btn-primary" onclick="event.stopPropagation(); window.location.href='404.html'">Manage</button>
+                    </div>
+                </div>
+                <div class="user-item" onclick="window.location.href='404.html'">
+                    <div class="user-info">
+                        <div class="user-avatar">JC</div>
+                        <div class="user-details">
+                            <h4>James Chen</h4>
+                            <p><i data-lucide="mail"></i> james.c@stackly.com · Role: Support</p>
+                        </div>
+                    </div>
+                    <div class="user-actions">
+                        <span class="user-status status-inactive">Inactive</span>
+                        <button class="user-btn btn-primary" onclick="event.stopPropagation(); window.location.href='404.html'">Manage</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ANALYTICS SECTION (Hidden by default) -->
+        <div id="analytics-section" style="display: none;">
+            <div class="section-title">
+                <h2><i data-lucide="bar-chart-2"></i> Analytics Dashboard</h2>
+                <span class="view-all" onclick="window.location.href='404.html'">Export <i data-lucide="download"></i></span>
+            </div>
+            
+            <div class="analytics-grid">
+                <div class="analytics-card" onclick="window.location.href='404.html'">
+                    <h3>Total Views</h3>
+                    <div class="number">1.2M</div>
+                    <div class="trend">↑ 18.2% from last month</div>
+                </div>
+                <div class="analytics-card" onclick="window.location.href='404.html'">
+                    <h3>Watch Hours</h3>
+                    <div class="number">342K</div>
+                    <div class="trend">↑ 12.5% from last month</div>
+                </div>
+                <div class="analytics-card" onclick="window.location.href='404.html'">
+                    <h3>Avg. Session</h3>
+                    <div class="number">24m</div>
+                    <div class="trend">↑ 3.2% from last week</div>
+                </div>
+                <div class="analytics-card" onclick="window.location.href='404.html'">
+                    <h3>Completion Rate</h3>
+                    <div class="number">68%</div>
+                    <div class="trend">↑ 5.1% from last month</div>
+                </div>
+            </div>
+            
+            <div class="content-grid" style="margin-top: 2rem;">
+                <div class="content-card" onclick="window.location.href='404.html'">
+                    <div class="content-info">
+                        <h3>Top Content</h3>
+                        <p>Most viewed content this month</p>
+                        <div style="margin-top: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <span>Mission: Unbreakable</span>
+                                <span style="color: var(--red-primary);">124K views</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <span>Beyond Infinity</span>
+                                <span style="color: var(--red-primary);">98K views</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>The Last Kingdom</span>
+                                <span style="color: var(--red-primary);">76K views</span>
+                            </div>
+                        </div>
+                        <button class="content-btn btn-primary" style="margin-top: 1rem;" onclick="event.stopPropagation(); window.location.href='404.html'">View Details</button>
+                    </div>
+                </div>
+                
+                <div class="content-card" onclick="window.location.href='404.html'">
+                    <div class="content-info">
+                        <h3>User Demographics</h3>
+                        <p>Audience breakdown</p>
+                        <div style="margin-top: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <span>18-24 years</span>
+                                <span style="color: var(--red-primary);">32%</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <span>25-34 years</span>
+                                <span style="color: var(--red-primary);">41%</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>35-44 years</span>
+                                <span style="color: var(--red-primary);">27%</span>
+                            </div>
+                        </div>
+                        <button class="content-btn btn-primary" style="margin-top: 1rem;" onclick="event.stopPropagation(); window.location.href='404.html'">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MESSAGES SECTION (Hidden by default) -->
+        <div id="messages-section" style="display: none;">
+            <div class="section-title">
+                <h2><i data-lucide="message-circle"></i> Messages</h2>
+                <span class="view-all" onclick="window.location.href='404.html'">Compose <i data-lucide="edit"></i></span>
+            </div>
+            
+            <div class="users-list">
+                <div class="user-item" onclick="window.location.href='404.html'">
+                    <div class="user-info">
+                        <div class="user-avatar">JD</div>
+                        <div class="user-details">
+                            <h4>John Doe</h4>
+                            <p>Content Upload Issue · 2 hours ago</p>
+                        </div>
+                    </div>
+                    <div class="user-actions">
+                        <span class="user-status status-active">New</span>
+                    </div>
+                </div>
+                <div class="user-item" onclick="window.location.href='404.html'">
+                    <div class="user-info">
+                        <div class="user-avatar">MP</div>
+                        <div class="user-details">
+                            <h4>Mike Peterson</h4>
+                            <p>Review Request: New Series · Yesterday</p>
+                        </div>
+                    </div>
+                    <div class="user-actions">
+                        <span class="user-status status-active">Urgent</span>
+                    </div>
+                </div>
+                <div class="user-item" onclick="window.location.href='404.html'">
+                    <div class="user-info">
+                        <div class="user-avatar">SR</div>
+                        <div class="user-details">
+                            <h4>Sarah Roberts</h4>
+                            <p>Analytics Report for March · 3 days ago</p>
+                        </div>
+                    </div>
+                    <div class="user-actions">
+                        <span class="user-status status-inactive">Read</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="content-btn btn-primary" onclick="window.location.href='404.html'" style="padding: 12px 40px; width: auto; display: inline-block;">View All Messages</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        // Load user data from localStorage
+        function loadUserData() {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            if (userData) {
+                const userName = userData.name || 'Admin';
+                const userEmail = userData.email || 'admin@stackly.com';
+                
+                // Update all profile displays
+                document.getElementById('profileEmail').textContent = userEmail;
+                document.getElementById('dropdownName').textContent = userName;
+                document.getElementById('dropdownEmail').textContent = userEmail;
+                document.getElementById('welcomeName').textContent = userName;
+                document.getElementById('welcomeEmail').textContent = userEmail;
+            }
+        }
+
+        // Show selected section
+        function showSection(section) {
+            // Hide all sections
+            document.getElementById('dashboard-section').style.display = 'none';
+            document.getElementById('content-section').style.display = 'none';
+            document.getElementById('users-section').style.display = 'none';
+            document.getElementById('analytics-section').style.display = 'none';
+            document.getElementById('messages-section').style.display = 'none';
+            
+            // Show selected section
+            document.getElementById(section + '-section').style.display = 'block';
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Find and activate the clicked link
+            const navLinks = document.querySelectorAll('.nav-link');
+            if (section === 'dashboard') navLinks[0].classList.add('active');
+            else if (section === 'content') navLinks[1].classList.add('active');
+            else if (section === 'users') navLinks[2].classList.add('active');
+            else if (section === 'analytics') navLinks[3].classList.add('active');
+            else if (section === 'messages') navLinks[4].classList.add('active');
+            
+            // Recreate icons for new content
+            lucide.createIcons();
+        }
+
+        // Toggle dropdown
+        function toggleDropdown() {
+            document.getElementById('dropdownContent').classList.toggle('show');
+        }
+
+        // Toggle mobile menu
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            const hamburger = document.querySelector('.hamburger');
+            hamburger.classList.toggle('active');
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+
+        // Close dropdown when clicking outside
+        window.onclick = function(event) {
+            if (!event.target.closest('.profile-dropdown')) {
+                document.getElementById('dropdownContent')?.classList.remove('show');
+            }
+        }
+
+        // Load user data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserData();
+            lucide.createIcons();
+            
+            // Show dashboard by default
+            showSection('dashboard');
+        });
+    </script>
+</body>
+</html>
